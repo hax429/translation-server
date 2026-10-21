@@ -26,8 +26,16 @@
 const config = require('config');
 const XRegExp = require('xregexp');
 const md5 = require('md5');
-const AWS = require('aws-sdk');
-const Lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
+// Reader: load the AWS SDK only when the identifier-search Lambda is used,
+// so local installs can leave it out.
+var Lambda;
+function getLambda() {
+	if (!Lambda) {
+		const AWS = require('aws-sdk');
+		Lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
+	}
+	return Lambda;
+}
 
 module.exports = {
 	/**
@@ -116,7 +124,7 @@ module.exports = {
 			Payload: JSON.stringify({query})
 		};
 		
-		let result = await Lambda.invoke(params).promise();
+		let result = await getLambda().invoke(params).promise();
 		
 		if (result.FunctionError) {
 			throw new Error('Lambda error: ' + result.Payload);
