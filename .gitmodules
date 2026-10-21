@@ -1,6 +1,7 @@
 [submodule "modules/translators"]
 	path = modules/translators
-	url = https://github.com/zotero/translators
+	url = https://github.com/hax429/translators.git
+	branch = reader
 [submodule "modules/utilities"]
 	path = modules/utilities
 	url = https://github.com/zotero/utilities.git
